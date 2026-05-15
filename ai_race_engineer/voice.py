@@ -132,7 +132,7 @@ class PiperSpeaker:
 
     def __init__(self, model_path: str, output_device: Optional[str] = None, radio_effect: Optional[str] = None) -> None:
         if shutil.which("piper") is None:
-            raise RuntimeError("Install Piper and ensure the 'piper' binary is on PATH")
+            raise RuntimeError("Install Piper from https://github.com/rhasspy/piper and ensure the 'piper' binary is on PATH")
         self.model_path = Path(model_path)
         self.output_device = output_device
         self.radio_effect = radio_effect
@@ -149,7 +149,7 @@ class PiperSpeaker:
 
         if self.radio_effect:
             if shutil.which("ffplay") is None:
-                raise RuntimeError("Install ffmpeg to use the optional radio effect")
+                raise RuntimeError("Install ffmpeg/ffplay to use the optional radio effect")
             ffplay_command = [
                 "ffplay",
                 "-autoexit",

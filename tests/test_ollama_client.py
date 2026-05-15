@@ -18,6 +18,15 @@ class OllamaClientTests(unittest.TestCase):
         self.assertEqual(payload["telemetry"], telemetry)
         self.assertEqual(payload["response_style"]["language"], "de")
 
+
+    def test_build_messages_accepts_empty_telemetry(self) -> None:
+        engineer = OllamaRaceEngineer(model="phi3")
+        messages = engineer.build_messages("Wie viel Sprit habe ich?", {})
+
+        payload = json.loads(messages[1]["content"])
+        self.assertEqual(payload["telemetry"], {})
+        self.assertEqual(payload["response_style"]["max_sentences"], 2)
+
     @patch("urllib.request.urlopen")
     def test_answer_reads_chat_completion_response(self, mocked_urlopen) -> None:
         class FakeResponse:
