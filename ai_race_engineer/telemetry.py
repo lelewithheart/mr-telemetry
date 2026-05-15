@@ -18,6 +18,8 @@ from typing import Any, Dict, List, Mapping, MutableMapping, Protocol
 
 F125_PACKET_FORMAT = 2025
 PLAYER_CAR_COUNT = 22
+INACTIVE_RESULT_STATUS = 0
+INVALID_POSITION_FALLBACK = 99
 
 
 class PacketIds:
@@ -241,8 +243,9 @@ class F125TelemetryAdapter:
 
         player_entry = entries[header.player_car_index]
         sorted_field = sorted(
-            (entry for entry in entries if entry["result_status"] != 0),
-            key=lambda entry: (entry["position"] or 99, -entry["total_distance_m"]),
+            # ``result_status == 0`` marks cars that are not actively classified yet.
+            (entry for entry in entries if entry["result_status"] != INACTIVE_RESULT_STATUS),
+            key=lambda entry: (entry["position"] or INVALID_POSITION_FALLBACK, -entry["total_distance_m"]),
         )
         ahead = next((entry for entry in sorted_field if entry["position"] == player_entry["position"] - 1), None)
         behind = next((entry for entry in sorted_field if entry["position"] == player_entry["position"] + 1), None)

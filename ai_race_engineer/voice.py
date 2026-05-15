@@ -58,7 +58,7 @@ class PushToTalkRecorder:
         if np is None or sd is None or keyboard is None:
             raise RuntimeError("Install numpy, sounddevice and pynput for push-to-talk recording")
 
-    def _audio_callback(self, indata: np.ndarray, frames: int, _time_info: object, _status: object) -> None:
+    def _audio_callback(self, indata: np.ndarray, _frames: int, _time_info: object, _status: object) -> None:
         if self._recording.is_set():
             self._frames.append(indata.copy())
 
