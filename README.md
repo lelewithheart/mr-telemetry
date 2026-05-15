@@ -102,7 +102,7 @@ text = transcriber.transcribe_wav_bytes(wav_bytes)
 from ai_race_engineer.voice import PiperSpeaker
 
 speaker = PiperSpeaker(
-    model_path="/opt/piper/en_GB-alan-medium.onnx",
+    piper_model_path="/opt/piper/en_GB-alan-medium.onnx",
     radio_effect="highpass=f=300,lowpass=f=3400,acompressor=threshold=-18dB:ratio=3,volume=1.7",
 )
 speaker.speak("Box this lap, front tyres are dropping away.")

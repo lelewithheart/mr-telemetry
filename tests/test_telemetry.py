@@ -84,7 +84,8 @@ class TelemetryParsingTests(unittest.TestCase):
             0,
             0,
         )
-        telemetry_packet = build_header(PacketIds.CAR_TELEMETRY) + telemetry_entry + (b"\x00" * CAR_TELEMETRY_STRUCT.size * REMAINING_PLAYER_CARS)
+        telemetry_padding = b"\x00" * CAR_TELEMETRY_STRUCT.size * REMAINING_PLAYER_CARS
+        telemetry_packet = build_header(PacketIds.CAR_TELEMETRY) + telemetry_entry + telemetry_padding
 
         status_entry = CAR_STATUS_STRUCT.pack(
             0,
@@ -113,7 +114,8 @@ class TelemetryParsingTests(unittest.TestCase):
             50000.0,
             0,
         )
-        status_packet = build_header(PacketIds.CAR_STATUS) + status_entry + (b"\x00" * CAR_STATUS_STRUCT.size * REMAINING_PLAYER_CARS)
+        status_padding = b"\x00" * CAR_STATUS_STRUCT.size * REMAINING_PLAYER_CARS
+        status_packet = build_header(PacketIds.CAR_STATUS) + status_entry + status_padding
 
         damage_entry = CAR_DAMAGE_STRUCT.pack(
             12.5,
@@ -129,7 +131,8 @@ class TelemetryParsingTests(unittest.TestCase):
             0,
             *([0] * 12),
         )
-        damage_packet = build_header(PacketIds.CAR_DAMAGE) + damage_entry + (b"\x00" * CAR_DAMAGE_STRUCT.size * REMAINING_PLAYER_CARS)
+        damage_padding = b"\x00" * CAR_DAMAGE_STRUCT.size * REMAINING_PLAYER_CARS
+        damage_packet = build_header(PacketIds.CAR_DAMAGE) + damage_entry + damage_padding
 
         for packet in (telemetry_packet, status_packet, damage_packet):
             self.adapter.parse_packet(packet, self.state)

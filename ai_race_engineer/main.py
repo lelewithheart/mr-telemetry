@@ -25,7 +25,7 @@ def run(
 
     transcriber = FasterWhisperTranscriber(model_size="small")
     recorder = PushToTalkRecorder()
-    speaker = PiperSpeaker(model_path=piper_model_path, radio_effect=radio_effect) if piper_model_path else None
+    speaker = PiperSpeaker(piper_model_path=piper_model_path, radio_effect=radio_effect) if piper_model_path else None
     engineer = OllamaRaceEngineer(model=ollama_model)
 
     print(f"Listening for F1 25 telemetry on {udp_host}:{udp_port} ...")

@@ -130,10 +130,10 @@ class PiperSpeaker:
     ``highpass=f=300,lowpass=f=3400,acompressor=threshold=-18dB:ratio=3``.
     """
 
-    def __init__(self, model_path: str, output_device: Optional[str] = None, radio_effect: Optional[str] = None) -> None:
+    def __init__(self, piper_model_path: str, output_device: Optional[str] = None, radio_effect: Optional[str] = None) -> None:
         if shutil.which("piper") is None:
             raise RuntimeError("Install Piper from https://github.com/rhasspy/piper and ensure the 'piper' binary is on PATH")
-        self.model_path = Path(model_path)
+        self.model_path = Path(piper_model_path)
         self.output_device = output_device
         self.radio_effect = radio_effect
 
