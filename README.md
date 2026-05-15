@@ -203,14 +203,14 @@ ollama pull phi3
 #### Nur Telemetrie + Sprachdialog + Ollama
 
 ```bash
-cd /home/runner/work/mr-telemetry/mr-telemetry
+cd ~/mr-telemetry
 python3 -m ai_race_engineer --model llama3 --udp-port 20777
 ```
 
 #### Mit Piper und Funk-Effekt
 
 ```bash
-cd /home/runner/work/mr-telemetry/mr-telemetry
+cd ~/mr-telemetry
 python3 -m ai_race_engineer \
   --model llama3 \
   --udp-port 20777 \
@@ -227,6 +227,6 @@ python3 -m ai_race_engineer \
 ## Entwicklung & Tests
 
 ```bash
-cd /home/runner/work/mr-telemetry/mr-telemetry
+cd ~/mr-telemetry
 python3 -m unittest discover -s tests -v
 ```

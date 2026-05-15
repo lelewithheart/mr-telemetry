@@ -127,7 +127,7 @@ class PiperSpeaker:
     """Calls Piper and optionally pipes the audio through ffmpeg/sox for radio FX.
 
     ``radio_effect`` must be an ffmpeg-compatible audio filter chain, for example
-    ``highpass=f=300,lowpass=f=3400,acompressor=threshold=-18dB:ratio=3``.
+    ``highpass=f=300,lowpass=f=3400,acompressor=threshold=-18dB:ratio=3,volume=1.7``.
     """
 
     def __init__(self, piper_model_path: str, output_device: Optional[str] = None, radio_effect: Optional[str] = None) -> None:
