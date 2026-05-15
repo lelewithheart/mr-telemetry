@@ -16,6 +16,7 @@ import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Mapping, MutableMapping, Protocol
 
+F125_PACKET_FORMAT = 2025
 PLAYER_CAR_COUNT = 22
 
 
@@ -76,7 +77,7 @@ class TelemetryStateStore:
         self._state: Dict[str, Any] = {
             "session": {
                 "game": "F1 25",
-                "packet_format": 2025,
+                "packet_format": F125_PACKET_FORMAT,
                 "updated_at": 0.0,
                 "lap_history_ms": {},
             },
@@ -125,7 +126,7 @@ class F125TelemetryAdapter:
 
     def parse_packet(self, payload: bytes, state: TelemetryStateStore) -> None:
         header = PacketHeader.from_buffer(payload)
-        if header.packet_format != 2025:
+        if header.packet_format != F125_PACKET_FORMAT:
             return
         if header.packet_id == PacketIds.CAR_TELEMETRY:
             self._parse_car_telemetry(payload, header, state)

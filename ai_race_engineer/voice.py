@@ -70,7 +70,7 @@ class PushToTalkRecorder:
             if key == keyboard.Key.space:
                 self._recording.set()
 
-        def on_release(key: object) -> bool | None:
+        def on_release(key: object) -> object:
             if key == keyboard.Key.space and self._recording.is_set():
                 self._recording.clear()
                 self._released.set()
@@ -124,7 +124,11 @@ class FasterWhisperTranscriber:
 
 
 class PiperSpeaker:
-    """Calls Piper and optionally pipes the audio through ffmpeg/sox for radio FX."""
+    """Calls Piper and optionally pipes the audio through ffmpeg/sox for radio FX.
+
+    ``radio_effect`` must be an ffmpeg-compatible audio filter chain, for example
+    ``highpass=f=300,lowpass=f=3400,acompressor=threshold=-18dB:ratio=3``.
+    """
 
     def __init__(self, model_path: str, output_device: Optional[str] = None, radio_effect: Optional[str] = None) -> None:
         if shutil.which("piper") is None:

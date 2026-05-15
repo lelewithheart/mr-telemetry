@@ -13,8 +13,33 @@ from ai_race_engineer.telemetry import (
 )
 
 
+TEST_PACKET_FORMAT = 2025
+TEST_GAME_YEAR = 25
+TEST_MAJOR_VERSION = 1
+TEST_MINOR_VERSION = 0
+TEST_PACKET_VERSION = 1
+TEST_SESSION_UID = 123456789
+TEST_SESSION_TIME = 12.5
+TEST_FRAME_IDENTIFIER = 10
+TEST_OVERALL_FRAME_IDENTIFIER = 10
+TEST_SECONDARY_PLAYER_INDEX = 255
+
+
 def build_header(packet_id: int, player_index: int = 0) -> bytes:
-    return HEADER_STRUCT.pack(2025, 25, 1, 0, 1, packet_id, 123456789, 12.5, 10, 10, player_index, 255)
+    return HEADER_STRUCT.pack(
+        TEST_PACKET_FORMAT,
+        TEST_GAME_YEAR,
+        TEST_MAJOR_VERSION,
+        TEST_MINOR_VERSION,
+        TEST_PACKET_VERSION,
+        packet_id,
+        TEST_SESSION_UID,
+        TEST_SESSION_TIME,
+        TEST_FRAME_IDENTIFIER,
+        TEST_OVERALL_FRAME_IDENTIFIER,
+        player_index,
+        TEST_SECONDARY_PLAYER_INDEX,
+    )
 
 
 class TelemetryParsingTests(unittest.TestCase):
