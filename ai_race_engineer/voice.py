@@ -58,7 +58,7 @@ class PushToTalkRecorder:
         if np is None or sd is None or keyboard is None:
             raise RuntimeError("Install numpy, sounddevice and pynput for push-to-talk recording")
 
-    def _audio_callback(self, indata: np.ndarray, frames: int, time_info: object, status: object) -> None:
+    def _audio_callback(self, indata: np.ndarray, frames: int, _time_info: object, _status: object) -> None:
         if self._recording.is_set():
             self._frames.append(indata.copy())
 
@@ -70,7 +70,7 @@ class PushToTalkRecorder:
             if key == keyboard.Key.space:
                 self._recording.set()
 
-        def on_release(key: object) -> object:
+        def on_release(key: object) -> bool | None:
             if key == keyboard.Key.space and self._recording.is_set():
                 self._recording.clear()
                 self._released.set()
@@ -142,8 +142,8 @@ class PiperSpeaker:
             return
         command = ["piper", "--model", str(self.model_path), "--output_raw"]
         piper_process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        assert piper_process.stdin is not None
-        assert piper_process.stdout is not None
+        if piper_process.stdin is None or piper_process.stdout is None:
+            raise RuntimeError("Failed to open Piper subprocess pipes")
         piper_process.stdin.write(text.encode("utf-8"))
         piper_process.stdin.close()
 

@@ -8,6 +8,7 @@ from ai_race_engineer.telemetry import (
     F125TelemetryAdapter,
     HEADER_STRUCT,
     LAP_DATA_STRUCT,
+    PLAYER_CAR_COUNT,
     PacketIds,
     TelemetryStateStore,
 )
@@ -23,6 +24,8 @@ TEST_SESSION_TIME = 12.5
 TEST_FRAME_IDENTIFIER = 10
 TEST_OVERALL_FRAME_IDENTIFIER = 10
 TEST_SECONDARY_PLAYER_INDEX = 255
+REMAINING_PLAYER_CARS = PLAYER_CAR_COUNT - 1
+REMAINING_FIELD_CARS = PLAYER_CAR_COUNT - 2
 
 
 def build_header(packet_id: int, player_index: int = 0) -> bytes:
@@ -81,7 +84,7 @@ class TelemetryParsingTests(unittest.TestCase):
             0,
             0,
         )
-        telemetry_packet = build_header(PacketIds.CAR_TELEMETRY) + telemetry_entry + (b"\x00" * CAR_TELEMETRY_STRUCT.size * 21)
+        telemetry_packet = build_header(PacketIds.CAR_TELEMETRY) + telemetry_entry + (b"\x00" * CAR_TELEMETRY_STRUCT.size * REMAINING_PLAYER_CARS)
 
         status_entry = CAR_STATUS_STRUCT.pack(
             0,
@@ -110,7 +113,7 @@ class TelemetryParsingTests(unittest.TestCase):
             50000.0,
             0,
         )
-        status_packet = build_header(PacketIds.CAR_STATUS) + status_entry + (b"\x00" * CAR_STATUS_STRUCT.size * 21)
+        status_packet = build_header(PacketIds.CAR_STATUS) + status_entry + (b"\x00" * CAR_STATUS_STRUCT.size * REMAINING_PLAYER_CARS)
 
         damage_entry = CAR_DAMAGE_STRUCT.pack(
             12.5,
@@ -126,7 +129,7 @@ class TelemetryParsingTests(unittest.TestCase):
             0,
             *([0] * 12),
         )
-        damage_packet = build_header(PacketIds.CAR_DAMAGE) + damage_entry + (b"\x00" * CAR_DAMAGE_STRUCT.size * 21)
+        damage_packet = build_header(PacketIds.CAR_DAMAGE) + damage_entry + (b"\x00" * CAR_DAMAGE_STRUCT.size * REMAINING_PLAYER_CARS)
 
         for packet in (telemetry_packet, status_packet, damage_packet):
             self.adapter.parse_packet(packet, self.state)
@@ -207,7 +210,7 @@ class TelemetryParsingTests(unittest.TestCase):
                 0,
             )
         )
-        entries.extend([b"\x00" * LAP_DATA_STRUCT.size for _ in range(20)])
+        entries.extend([b"\x00" * LAP_DATA_STRUCT.size for _ in range(REMAINING_FIELD_CARS)])
         first_lap_packet = build_header(PacketIds.LAP_DATA) + b"".join(entries)
         self.adapter.parse_packet(first_lap_packet, self.state)
 
